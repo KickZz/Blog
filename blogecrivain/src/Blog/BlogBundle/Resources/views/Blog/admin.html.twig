@@ -1,0 +1,8 @@
+{% extends "BlogBlogBundle::layout.html.twig" %}
+{% block bodyadmin %} 
+{# On affiche tous les messages flash dont le nom est « notice » #}
+{% for message in app.session.flashbag.get('notice')%}
+<div class="alert alert-info">{{ message }}</div>
+{% endfor %} 
+{{ include("BlogBlogBundle:Blog:formajoutarticle.html.twig") }} 
+{% endblock %}

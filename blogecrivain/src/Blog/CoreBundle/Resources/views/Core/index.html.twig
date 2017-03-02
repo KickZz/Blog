@@ -1,0 +1,13 @@
+{% extends "BlogCoreBundle::layout.html.twig" %}
+{% block body %}
+
+{% for article in listeArticle %}
+<div class="">
+    {{article.titre}}
+    {{article.contenu}}
+    {{article.auteur}}
+    {{article.datePublier|date("d.m.Y")}}
+</div>
+{% endfor %}
+
+{% endblock %}

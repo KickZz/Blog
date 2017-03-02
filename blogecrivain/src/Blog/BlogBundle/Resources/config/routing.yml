@@ -1,0 +1,3 @@
+blog_blog_homepage:
+    path:     /admin
+    defaults: { _controller: BlogBlogBundle:Blog:admin }
