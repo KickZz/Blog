@@ -24,7 +24,8 @@ class BlogController extends Controller
         
         // Si la requête est en POST
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-      
+            
+            
             $em = $this->getDoctrine()->getManager();
             $em->persist($article);
             $em->flush();

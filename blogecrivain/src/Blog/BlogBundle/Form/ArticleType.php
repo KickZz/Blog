@@ -18,7 +18,8 @@ class ArticleType extends AbstractType
         $builder->add('titre')
                 ->add('contenu', TextareaType::class, array(
                         'attr' => array(
-                        'class' => 'tinymce')))
+                        'class' => 'tinymce',
+                        'name' => 'texte')))
                 ->add('auteur')
                 ->add('Publier', SubmitType::class);
     }

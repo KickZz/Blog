@@ -21,6 +21,7 @@ class CoreController extends Controller
         
         $listeArticle = $em->findAll();
         
+        
         return $this->render('BlogCoreBundle:Core:index.html.twig', array(
                             'listeArticle' => $listeArticle));
         

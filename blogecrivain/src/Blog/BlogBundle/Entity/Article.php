@@ -50,7 +50,7 @@ class Article
     private $datePublier;
     
     /**
-     * @ORM\OneToMany(targetEntity="Blog\BlogBundle\Entity\Commentaire", mappedBy="article")
+     * @ORM\OneToMany(targetEntity="Blog\BlogBundle\Entity\Commentaire", mappedBy="article", cascade={"persist", "remove"})
      */
     private $commentaires;
 
@@ -165,7 +165,7 @@ class Article
     public function __construct()
     {
         $this->commentaires = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->datepublier = new \Datetime('now',new \DateTimeZone('Europe/Paris'));
+        $this->datePublier = new \Datetime('now',new \DateTimeZone('Europe/Paris'));
     }
 
     /**

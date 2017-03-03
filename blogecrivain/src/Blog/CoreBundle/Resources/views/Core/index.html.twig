@@ -4,10 +4,11 @@
 {% for article in listeArticle %}
 <div class="">
     {{article.titre}}
-    {{article.contenu}}
+    {{article.contenu| raw}}
     {{article.auteur}}
     {{article.datePublier|date("d.m.Y")}}
 </div>
+
 {% endfor %}
 
 {% endblock %}
