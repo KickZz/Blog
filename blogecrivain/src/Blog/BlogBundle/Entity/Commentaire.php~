@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Commentaire
 {
     /**
-     * @ORM\ManyToOne(targetEntity="Blog\BlogBundle\Entity\Article")
+     * @ORM\ManyToOne(targetEntity="Blog\BlogBundle\Entity\Article", inversedBy="commentaires")
      * @ORM\JoinColumn(nullable=false)
      */
   private $article;
@@ -43,7 +43,7 @@ class Commentaire
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="datetime")
+     * @ORM\Column(name="datecom", type="datetime")
      */
     private $datecom;
 
@@ -73,6 +73,7 @@ class Commentaire
     {
     $this->datecom = new \Datetime('now',new \DateTimeZone('Europe/Paris'));
     $this->signaler = false;
+    $this->niveau = 0;
     }
     
     /**

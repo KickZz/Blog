@@ -1,8 +1,38 @@
 {% extends "BlogBlogBundle::layout.html.twig" %}
-{% block bodyadmin %} 
-{# On affiche tous les messages flash dont le nom est « notice » #}
-{% for message in app.session.flashbag.get('notice')%}
-<div class="alert alert-info">{{ message }}</div>
-{% endfor %} 
-{{ include("BlogBlogBundle:Blog:formajoutarticle.html.twig") }} 
+{% block bodyadmin %}
+<div class="row">
+    {# On affiche tous les messages flash dont le nom est « notice » #}
+    {% for message in app.session.flashbag.get('notice')%}
+    <div class="alert alert-info">{{ message }}</div>
+    {% endfor %} 
+    <div class="col-md-3">
+        <ul class="nav nav-pills nav-stacked">
+            <li class="active"><a href="#edition" data-toggle="tab" id="onglet">Nouvel Article</a></li>
+            <li><a href="#article" data-toggle="tab" id="onglet">Mes Articles</a></li>
+            <li><a href="#commentaire" data-toggle="tab" id="onglet">Commentaire(s) Signalé(s)</a></li>
+        </ul>
+    </div>
+    <div class="col-md-9">
+        <div class="tab-content">
+            <div class="tab-pane fade active in" id="edition">{{ include("BlogBlogBundle:Blog:formajoutarticle.html.twig") }} </div>
+            <div class="tab-pane fade" id="article">
+                {% for article in listeArticle %}
+                    <div class="well">
+                        <div class="row">
+                            <div class="col-md-6 pull-left">
+                                {{ article.titre }}
+                            </div>
+                            <div class="col-md-3 ">
+                                <form action="{{ path('blog_blog_supprimer', { 'id': article.id})}}" method="post">
+                                    <input type="submit" class="btn btn-danger" value="Supprimer">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="tab-pane fade" id="commentaire">commentaires</div>
+        </div>
+    </div>
+</div>
 {% endblock %}

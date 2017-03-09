@@ -16,7 +16,7 @@ class CommentaireType extends AbstractType
     {
         $builder->add('auteur')
                 ->add('contenu')
-                ->add('Valider' , SubmitType::class);
+                 ->add('Publier', SubmitType::class);
     }
     
     /**

@@ -2,13 +2,46 @@
 {% block body %}
 
 {% for article in listeArticle %}
-<div class="">
-    {{article.titre}}
+<div class="well">
+    {{article.titre}}</br>
     {{article.contenu| raw}}
-    {{article.auteur}}
-    {{article.datePublier|date("d.m.Y")}}
+    {{article.auteur}}</br>
+    {{article.datePublier|date("d.m.Y")}}</br></br>
+    <strong>Commentaires : </strong>
+        {% for com in article.commentaires %}
+            <div class="well">
+                {{com.contenu}}</br></br>
+               <em>Par {{com.auteur}} le {{com.datecom|date ('d.m.Y')}}</em>        
+            </div>
+        {% endfor %}
+    
+        
+            {{ render(controller("BlogBlogBundle:Blog:com", {'idArticle': article.id })) }}
+       
 </div>
 
 {% endfor %}
 
+{% endblock %}
+{% block javascriptsbody %}
+
+{#<script>
+
+$("#formliste").submit(function(){ 
+   
+    
+    $.ajax({
+        url: $this.attr('action'),
+        type: $this.attr('method'),
+        cache: false,
+        success: function(response){
+            
+            $("#liste").html(response);
+        }
+    });    
+    return false;
+        
+});
+    
+</script>#}
 {% endblock %}

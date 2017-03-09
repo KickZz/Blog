@@ -45,14 +45,14 @@ class Article
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="datetime")
+     * @ORM\Column(name="datepublier", type="datetime")
      */
-    private $date;
+    private $datePublier;
     
     /**
-     * @ORM\OneToMany(targetEntity="Blog\BlogBundle\Entity\Commentaire", mappedBy="article")
+     * @ORM\OneToMany(targetEntity="Blog\BlogBundle\Entity\Commentaire", mappedBy="article", cascade={"persist", "remove"})
      */
-  private $commentaires;
+    private $commentaires;
 
     /**
      * Get id
@@ -137,26 +137,68 @@ class Article
     }
 
     /**
-     * Set date
+     * Set datePublier
      *
-     * @param \DateTime $date
+     * @param \DateTime $datePublier
      *
      * @return Article
      */
-    public function setDate($date)
+    public function setDatePublier($datePublier)
     {
-        $this->date = $date;
+        $this->datePublier = $datePublier;
 
         return $this;
     }
 
     /**
-     * Get date
+     * Get datePublier
      *
      * @return \DateTime
      */
-    public function getDate()
+    public function getDatePublier()
     {
-        return $this->date;
+        return $this->datePublier;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->commentaires = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->datePublier = new \Datetime('now',new \DateTimeZone('Europe/Paris'));
+    }
+
+    /**
+     * Add commentaire
+     *
+     * @param \Blog\BlogBundle\Entity\Commentaire $commentaire
+     *
+     * @return Article
+     */
+    public function addCommentaire(\Blog\BlogBundle\Entity\Commentaire $commentaire)
+    {
+        $this->commentaires[] = $commentaire;
+
+        return $this;
+    }
+
+    /**
+     * Remove commentaire
+     *
+     * @param \Blog\BlogBundle\Entity\Commentaire $commentaire
+     */
+    public function removeCommentaire(\Blog\BlogBundle\Entity\Commentaire $commentaire)
+    {
+        $this->commentaires->removeElement($commentaire);
+    }
+
+    /**
+     * Get commentaires
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCommentaires()
+    {
+        return $this->commentaires;
     }
 }

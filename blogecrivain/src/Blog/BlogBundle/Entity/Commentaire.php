@@ -13,10 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 class Commentaire
 {
     /**
-     * @ORM\ManyToOne(targetEntity="Blog\BlogBundle\Entity\Article")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="Blog\BlogBundle\Entity\Article", inversedBy="commentaires")
      */
-  private $article;
+    private $article;
     /**
      * @var int
      *
@@ -50,7 +49,7 @@ class Commentaire
     /**
      * @var int
      *
-     * @ORM\Column(name="niveau", type="integer")
+     * @ORM\Column(name="niveau", type="integer", nullable=true)
      */
     private $niveau;
     
@@ -68,12 +67,15 @@ class Commentaire
      */
     private $idcomreponse;
 
-
+    /**
+     * Constructor
+     */
     public function __construct()
     {
     $this->datecom = new \Datetime('now',new \DateTimeZone('Europe/Paris'));
     $this->signaler = false;
     $this->niveau = 0;
+    $this->idcomreponse = 0;
     }
     
     /**
