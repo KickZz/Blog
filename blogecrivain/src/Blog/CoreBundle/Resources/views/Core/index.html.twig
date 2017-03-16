@@ -1,47 +1,245 @@
-{% extends "BlogCoreBundle::layout.html.twig" %}
-{% block body %}
-
+{% extends "BlogCoreBundle::layout.html.twig" %} {% block body %}
 {% for article in listeArticle %}
 <div class="well">
     {{article.titre}}</br>
-    {{article.contenu| raw}}
-    {{article.auteur}}</br>
-    {{article.datePublier|date("d.m.Y")}}</br></br>
+    {{article.contenu| raw}} {{article.auteur}}
+    </br>
+    {{article.datePublier|date("d.m.Y")}}</br>
+    </br>
+
+    <div class="col-md-offset-10 col-md-2">
+        <button href="#form{{ article.id }}" data-parent="#mescoms" class="btn btn-primary idbouton" data-toggle="collapse">Commenter</button>
+    </div>
+    </br>
+    </br>
+    <div id="form{{ article.id }}" class="panel-collapse collapse ">
+        <div class="well">
+            <form id="formulaire{{ article.id }}" action="{{ path('blog_blog_com', { 'idArticle': article.id})}}" method="post">
+                <div class="form-group">
+                    <label class="control-label required" for="auteur">Auteur : </label>
+                    <input type="text" id="auteur{{ article.id }}" name="auteur" required="required" maxlenght="255" class="form-control" placeholder="Votre pseudo...">
+                </div>
+                <div class="form-group">
+                    <label class="control-label required" for="contenu">Contenu : </label>
+                    <textarea type="text" id="contenu{{ article.id }}" name="contenu" required="required" class="form-control" placeholder="Votre commentaire..."></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" id="publier{{ article.id }}" name="publier{{ article.id }}" class="btn btn-default" >Publier</button>
+                </div>
+            </form>
+      
+        </div>
+    </div>
     <strong>Commentaires : </strong>
-        {% for com in article.commentaires %}
-            <div class="well">
-                {{com.contenu}}</br></br>
-               <em>Par {{com.auteur}} le {{com.datecom|date ('d.m.Y')}}</em>        
+    <div id="mescoms">
+        {# Affichage des commentaires par niveau de reponse #} 
+        {# Commentaire de niveau 0#} 
+        {% for com in article.commentaires if com.niveau == 0 %} 
+        {% set a = com.id %}
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h2 id="titre{{com.id}}" class="panel-title"><em>Par {{com.auteur}} le {{com.datecom|date ('d.m.Y')}} à {{com.datecom|date ("H\\hi\\ms\\s")}}</em></h2>
             </div>
-        {% endfor %}
-    
-        
-            {{ render(controller("BlogBlogBundle:Blog:com", {'idArticle': article.id })) }}
-       
+            <div id="contenu{{com.id}}" class="panel-body">
+                {{com.contenu}}</br>
+
+
+                <div class="col-md-offset-10 col-md-1">
+                    <button href="#form{{ com.id }}" id="{{com.id}}" data-parent="#mescoms" class="btn btn-primary idbouton" data-toggle="collapse">Répondre</button>
+                </div>
+
+                {% if com.signaler == false %}
+                <div class=" col-md-1">
+                    <form action="{{ path('blog_blog_signaler', { 'id': com.id})}}" method="post">
+                        <input type="submit" class="btn btn-danger" value="Signaler">
+                    </form>
+                </div>
+                {% elseif com.signaler == true %} {% if com.editer == false %}
+                <div class="col-md-1">
+                    <em>Commentaire signalé</em>
+                </div>
+                {%else%}
+                <div class="col-md-1">
+                    <em>Commentaire modéré</em>
+                </div>
+                {% endif %} {% endif %}
+            </div>
+            <div id="form{{ com.id }}" class="panel-collapse collapse ">
+                <div class="well">
+                    <form action="{{ path('blog_blog_comrep', { 'idArticle': article.id, 'idCom': com.id, 'niveau': 1})}}" method="post">
+                        <div class="form-group">
+                            <label class="control-label required" for="auteur">Auteur : </label>
+                            <input type="text" id="auteur{{ com.id }}" name="auteur" required="required" maxlenght="255" class="form-control" placeholder="Votre pseudo...">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label required" for="contenu">Contenu : </label>
+                            <textarea type="text" id="contenu{{ com.id }}" name="contenu" required="required" class="form-control" placeholder="Votre commentaire..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" id="publier{{ com.id }}" name="publier{{ com.id }}" class="btn btn-default" >Publier</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {# Commentaire de niveau 1#} 
+        {% for com in article.commentaires if com.idcomreponse == a%} 
+        {% set b = com.id %}
+        <div class="panel panel-info col-md-offset-1">
+            <div class="panel-heading">
+                <h2 id="titre{{com.id}}" class="panel-title"><em>Par {{com.auteur}} le {{com.datecom|date ('d.m.Y')}} à {{com.datecom|date ("H\\hi\\ms\\s")}}</em></h2>
+            </div>
+            <div id="contenu{{com.id}}" class="panel-body">
+                {{com.contenu}}</br>
+
+
+                <div class="col-md-offset-10 col-md-1">
+                    <button href="#form{{ com.id }}" id="{{com.id}}" data-parent="#mescoms" class="btn btn-primary idbouton" data-toggle="collapse">Répondre</button>
+                </div>
+
+                {% if com.signaler == false %}
+                <div class=" col-md-1">
+                    <form action="{{ path('blog_blog_signaler', { 'id': com.id})}}" method="post">
+                        <input type="submit" class="btn btn-danger" value="Signaler">
+                    </form>
+                </div>
+                {% elseif com.signaler == true %} {% if com.editer == false %}
+                <div class="col-md-1">
+                    <em>Commentaire signalé</em>
+                </div>
+                {%else%}
+                <div class="col-md-1">
+                    <em>Commentaire modéré</em>
+                </div>
+                {% endif %} {% endif %}
+            </div>
+            <div id="form{{ com.id }}" class="panel-collapse collapse ">
+                <div class="well">
+                    <form action="{{ path('blog_blog_comrep', { 'idArticle': article.id, 'idCom': com.id, 'niveau': 2})}}" method="post">
+                        <div class="form-group">
+                            <label class="control-label required" for="auteur">Auteur : </label>
+                            <input type="text" id="auteur{{ com.id }}" name="auteur" required="required" maxlenght="255" class="form-control" placeholder="Votre pseudo...">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label required" for="contenu">Contenu : </label>
+                            <textarea type="text" id="contenu{{ com.id }}" name="contenu" required="required" class="form-control" placeholder="Votre commentaire..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" id="publier{{ com.id }}" name="publier{{ com.id }}" class="btn btn-default" >Publier</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {# Commentaire de niveau 2#} 
+        {% for com in article.commentaires if com.idcomreponse == b%}
+        {% set c = com.id %}
+        <div class="panel panel-info col-md-offset-2">
+            <div class="panel-heading">
+                <h2 id="titre{{com.id}}" class="panel-title"><em>Par {{com.auteur}} le {{com.datecom|date ('d.m.Y')}} à {{com.datecom|date ("H\\hi\\ms\\s")}}</em></h2>
+            </div>
+            <div id="contenu{{com.id}}" class="panel-body">
+                {{com.contenu}}</br>
+
+
+                <div class="col-md-offset-10 col-md-1">
+                    <button href="#form{{ com.id }}" id="{{com.id}}" data-parent="#mescoms" class="btn btn-primary idbouton" data-toggle="collapse">Répondre</button>
+                </div>
+
+                {% if com.signaler == false %}
+                <div class=" col-md-1">
+                    <form action="{{ path('blog_blog_signaler', { 'id': com.id})}}" method="post">
+                        <input type="submit" class="btn btn-danger" value="Signaler">
+                    </form>
+                </div>
+                {% elseif com.signaler == true %} {% if com.editer == false %}
+                <div class="col-md-1">
+                    <em>Commentaire signalé</em>
+                </div>
+                {%else%}
+                <div class="col-md-1">
+                    <em>Commentaire modéré</em>
+                </div>
+                {% endif %} {% endif %}
+            </div>
+            <div id="form{{ com.id }}" class="panel-collapse collapse ">
+                <div class="well">
+                    <form action="{{ path('blog_blog_comrep', { 'idArticle': article.id, 'idCom': com.id, 'niveau': 3})}}" method="post">
+                        <div class="form-group">
+                            <label class="control-label required" for="auteur">Auteur : </label>
+                            <input type="text" id="auteur{{ com.id }}" name="auteur" required="required" maxlenght="255" class="form-control" placeholder="Votre pseudo...">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label required" for="contenu">Contenu : </label>
+                            <textarea type="text" id="contenu{{ com.id }}" name="contenu" required="required" class="form-control" placeholder="Votre commentaire..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" id="publier{{ com.id }}" name="publier{{ com.id }}" class="btn btn-default" >Publier</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {# Commentaire de niveau 3#} 
+        {% for com in article.commentaires if com.idcomreponse == c%} 
+        {% set d = com.id %}
+        <div class="panel panel-info col-md-offset-3">
+            <div class="panel-heading">
+                <h2 id="titre{{com.id}}" class="panel-title"><em>Par {{com.auteur}} le {{com.datecom|date ('d.m.Y')}} à {{com.datecom|date ("H\\hi\\ms\\s")}}</em></h2>
+            </div>
+            <div id="contenu{{com.id}}" class="panel-body">
+                {{com.contenu}}</br>
+
+
+
+
+                {% if com.signaler == false %}
+                <div class="col-md-offset-10 col-md-1">
+                    <form action="{{ path('blog_blog_signaler', { 'id': com.id})}}" method="post">
+                        <input type="submit" class="btn btn-danger" value="Signaler">
+                    </form>
+                </div>
+                {% elseif com.signaler == true %} {% if com.editer == false %}
+                <div class="col-md-1">
+                    <em>Commentaire signalé</em>
+                </div>
+                {%else%}
+                <div class="col-md-1">
+                    <em>Commentaire modéré</em>
+                </div>
+                {% endif %} {% endif %}
+            </div>
+        </div>
+
+
+
+        {% endfor %} {% endfor %} {% endfor %} {% endfor %}
+
+
+
+
+    </div>
 </div>
 
-{% endfor %}
+{% endfor %} {% endblock %} {% block javascriptsbody %} {#
 
-{% endblock %}
-{% block javascriptsbody %}
+<script>
+    $("#formliste").submit(function () {
 
-{#<script>
 
-$("#formliste").submit(function(){ 
-   
-    
-    $.ajax({
-        url: $this.attr('action'),
-        type: $this.attr('method'),
-        cache: false,
-        success: function(response){
-            
-            $("#liste").html(response);
-        }
-    });    
-    return false;
-        
-});
-    
-</script>#}
-{% endblock %}
+        $.ajax({
+            url: $this.attr('action'),
+            type: $this.attr('method'),
+            cache: false,
+            success: function (response) {
+
+                $("#liste").html(response);
+            }
+        });
+        return false;
+
+    });
+</script>#} {% endblock %}

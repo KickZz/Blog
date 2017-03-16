@@ -4,7 +4,19 @@ blog_blog_homepage:
 blog_blog_supprimer:
     path:     /admin/supprimer/{id}
     defaults: { _controller: BlogBlogBundle:Blog:supprimer }
+blog_blog_update:
+    path:     /admin/update/{id}
+    defaults: { _controller: BlogBlogBundle:Blog:update }
+blog_blog_signaler:
+    path:     /admin/signaler/{id}
+    defaults: { _controller: BlogBlogBundle:Blog:signaler }
+blog_blog_supprimercom:
+    path:     /admin/supprimercom/{id}
+    defaults: { _controller: BlogBlogBundle:Blog:supprimercom }
 blog_blog_com:
     path:     /com/{idArticle}
     defaults: { _controller: BlogBlogBundle:Blog:com }
+blog_blog_comrep:
+    path:     /com/{idArticle}/{idCom}/{niveau}
+    defaults: { _controller: BlogBlogBundle:Blog:comrep }
     

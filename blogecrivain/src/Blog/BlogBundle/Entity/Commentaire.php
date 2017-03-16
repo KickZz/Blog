@@ -61,6 +61,13 @@ class Commentaire
     private $signaler;
     
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="editer", type="boolean")
+     */
+    private $editer;
+    
+    /**
      * @var int
      *
      * @ORM\Column(name="idcomreponse", type="integer", nullable=true)
@@ -74,6 +81,7 @@ class Commentaire
     {
     $this->datecom = new \Datetime('now',new \DateTimeZone('Europe/Paris'));
     $this->signaler = false;
+    $this->editer = false;
     $this->niveau = 0;
     $this->idcomreponse = 0;
     }
@@ -230,6 +238,29 @@ class Commentaire
     public function getSignaler()
     {
         return $this->signaler;
+    }
+    /**
+     * Set editer
+     *
+     * @param boolean $editer
+     *
+     * @return Commentaire
+     */
+    public function setEditer($editer)
+    {
+        $this->editer = $editer;
+
+        return $this;
+    }
+
+    /**
+     * Get editer
+     *
+     * @return boolean
+     */
+    public function getEditer()
+    {
+        return $this->editer;
     }
 
     /**

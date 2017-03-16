@@ -15,7 +15,7 @@ class CoreController extends Controller
     
     public function indexAction(Request $request)
     {
-        
+  
         $em = $this
             ->getDoctrine()
             ->getManager()
@@ -25,7 +25,8 @@ class CoreController extends Controller
         
         
         return $this->render('BlogCoreBundle:Core:index.html.twig', array(
-                            'listeArticle' => $listeArticle));
+                            'listeArticle' => $listeArticle
+                            ));
         
     }
     
