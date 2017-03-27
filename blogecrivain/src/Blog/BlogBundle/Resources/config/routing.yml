@@ -1,0 +1,24 @@
+blog_blog_homepage:
+    path:     /admin
+    defaults: { _controller: BlogBlogBundle:Blog:admin }
+blog_blog_supprimer:
+    path:     /admin/supprimer/{id}
+    defaults: { _controller: BlogBlogBundle:Blog:supprimer }
+blog_blog_update:
+    path:     /admin/update/{id}
+    defaults: { _controller: BlogBlogBundle:Blog:update }
+blog_blog_signaler:
+    path:     /signaler/{id}/{page}
+    defaults: { _controller: BlogBlogBundle:Blog:signaler }
+blog_blog_supprimercom:
+    path:     /admin/supprimercom/{id}
+    defaults: { _controller: BlogBlogBundle:Blog:supprimerCom }
+blog_blog_nepassupprimercom:
+    path:     /admin/nepassupprimercom/{id}
+    defaults: { _controller: BlogBlogBundle:Blog:nePasSupprimerCom }
+blog_blog_com:
+    path:     /com/{idArticle}/{page}
+    defaults: { _controller: BlogBlogBundle:Blog:com }
+blog_blog_comrep:
+    path:     /com/{idArticle}/{idCom}/{niveau}/{page}
+    defaults: { _controller: BlogBlogBundle:Blog:comRep }

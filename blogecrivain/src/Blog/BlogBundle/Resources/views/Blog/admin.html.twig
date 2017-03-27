@@ -1,0 +1,191 @@
+{% extends "BlogBlogBundle::layout.html.twig" %} {% block bodyadmin %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            {# On affiche tous les messages flash dont le nom est « notice » #} 
+                {% for message in app.session.flashbag.get('notice')%}
+                <div class="alert alert-success" id="info">{{ message }}</div>
+                {% endfor %}
+            <div class="" id="message"></div>
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <ul class="nav nav-pills nav-stacked">
+                <li id="onglet1" class="active"><a href="#edition" data-toggle="tab" id="onglet">Nouvel Article</a></li>
+                <li id="onglet2"><a href="#mesArticle" data-toggle="tab" id="onglet">Mes Articles <span id="loading"></span></a></li>
+                <li id="onglet3"><a href="#commentaire" data-toggle="tab" id="onglet">Commentaire(s) Signalé(s)<span id="loadingCom"></span></a></li>
+                
+                
+            </ul>
+        </div>
+        <div class="col-md-10">
+            <div class="tab-content">
+                <div class="tab-pane fade active in" id="edition">{{ include("BlogBlogBundle:Blog:formajoutarticle.html.twig") }} </div>
+                <div class="tab-pane fade" id="mesArticle">{{ include("BlogBlogBundle:Blog:listeArticle.html.twig") }} </div>
+                <div class="tab-pane fade" id="commentaire">{{ include("BlogBlogBundle:Blog:listeComSignaler.html.twig") }}
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascriptsbody %}
+
+
+<script type="text/javascript">
+    
+function edition() {
+         
+        $('.boutonArticle').on('submit', function (e) {
+
+                e.preventDefault();
+                
+                var idArticle = $(this).data("article");
+                var auteur = $('#auteur'+ idArticle).val();
+                var titre = $('#titre'+ idArticle).val();
+                var contenu = $('#contenu'+ idArticle).val();
+                
+                
+                
+                
+                $("#loading").html("<img src='{{asset ('bundles/blogblog/images/loading.gif')}}' alt='loading'>");
+
+
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: {
+                        auteur: auteur,
+                        contenu: contenu,
+                        titre: titre
+                    },
+                    success: function (response) {
+                         
+                        $("#loading").html("");
+                        $("#mesArticle").html(response);
+                        $('#message').addClass("alert alert-success");
+                        $('#message').html("Article mis à jour.");
+                        $('#message').removeAttr("style");
+                        init();
+                        
+                        
+                         
+                    }
+                });
+               
+            });
+            
+        }
+   
+function suppression() {
+        
+
+
+            $('.boutonSuppression').on('submit', function (e) {
+
+                e.preventDefault();
+                $("#loading").html("<img src='{{asset ('bundles/blogblog/images/loading.gif')}}' alt='loading'>");
+                
+
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    success: function (response) {
+                        $("#loading").html("");
+                        $("#mesArticle").html(response);
+                        $('#message').addClass("alert alert-success");
+                        $('#message').html("Article supprimé.");
+                        $('#message').removeAttr("style");
+                        init();
+                        
+                        
+                    }
+                });
+
+            });
+        
+        }
+    
+function suppressionCom() {
+        
+
+
+            $('.boutonSuppressionCom').on('submit', function (e) {
+
+                e.preventDefault();
+                $("#loadingCom").html("<img src='{{asset ('bundles/blogblog/images/loading.gif')}}' alt='loading'>");
+                
+
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    success: function (response) {
+                        $("#loadingCom").html("");
+                        $("#commentaire").html(response);
+                        $('#message').addClass("alert alert-success");
+                        $('#message').html("Commentaire supprimé.");
+                        $('#message').removeAttr("style");
+                        init2();
+                        
+                        
+                    }
+                });
+
+            });
+        
+        }
+    
+function signalerCom(){
+    $('.leverSignalement').on('click', function (e) {
+        e.preventDefault();
+        $.ajax({
+                    url: $(this).attr('href'),
+                    success: function (response) {
+                        $("#loadingCom").html("");
+                        $("#commentaire").html(response);
+                        $('#message').addClass("alert alert-success");
+                        $('#message').html("Signalement levé.");
+                        $('#message').removeAttr("style");
+                        init2();
+
+                    }
+                });
+        });
+    }
+    
+function init() {
+    initTinyMCE();
+    edition();
+    suppression();
+    $('#message').fadeOut(3000);
+    
+    
+}
+    
+function init2() {
+    
+    suppressionCom();
+    signalerCom();
+    $('#message').fadeOut(3000);
+    
+    
+}
+    
+jQuery(function(){
+    suppression();
+    edition();
+    suppressionCom();
+    signalerCom()
+    $('#info').fadeOut(3000);
+    });
+    
+</script>
+
+{% endblock %}

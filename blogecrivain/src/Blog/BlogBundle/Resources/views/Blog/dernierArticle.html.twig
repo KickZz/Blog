@@ -1,0 +1,8 @@
+<h2>Derniers Articles</h2>
+    
+    {% for article in liste %}
+    <a href="{{ path('blog_core_homepage')}}#article{{article.id}}" class="dernierArticle"><h3>{{article.titre}}</h3></a>
+    <i class="fa fa-clock-o" aria-hidden="true"></i> Posté par {{article.auteur}} le {{article.datePublier|date("d.m.Y")}}<br>
+    <br>
+    
+    {% endfor %}
