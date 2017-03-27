@@ -1,0 +1,18 @@
+{% extends "BlogCoreBundle::layout.html.twig" %} 
+
+{% block body %}
+
+    <title>Erreur : {{ status_text }}</title>
+  <div class="well">
+    <div class="text-center">
+    <h1>Oops! Une erreur est survenue ("{{ status_code }} {{ status_text }}")</h1>
+    <h2>("{{ status_code }} {{ status_text }}")</h2>
+
+    <div>
+      Nous vous invitons à retourner à l'accueil ;) !
+        <span class="pull-right">Jean Forteroche</span>
+    </div>
+</div>
+      </div>
+  
+{% endblock %}
