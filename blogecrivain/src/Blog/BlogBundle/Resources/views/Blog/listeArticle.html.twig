@@ -1,0 +1,64 @@
+<div class="container-fluid">
+                        <div id="mesarticles" class="panel-group ">
+
+                            {% for article in listeArticle %}
+                            
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h2 class="panel-title">
+                                    <a href="#{{ article.id }}" data-parent="#mesarticles" data-toggle="collapse" > {{ article.titre }} par {{ article.auteur }} le {{ article.datePublier|date ('d.m.Y') }} à {{ article.datePublier|date ("H\\hi\\ms\\s") }}</a> 
+                                    <div class="pull-right">
+                                                <a id="html" data-toggle="modal" data-backdrop="false" href="#formulaireArticle{{ article.id }}" class="erreur" title="Supprimer"><i class="fa fa-window-close" aria-hidden="true"></i></a>
+                                            </div>
+                                </h2>
+                                </div>
+                                <div id="{{ article.id }}" class="panel-collapse collapse ">
+                                    <div class="panel-body">
+
+                                        <form action="{{path ('blog_blog_update', { 'id': article.id})}}" method="post" id="edition{{article.id}}" data-article="{{article.id}}" class="boutonArticle">
+                                            <div class="form-group ">
+                                                <label class="control-label required" for="titre">Titre</label>
+                                                <input type="text" name="titre" required="required" class="form-control" value="{{article.titre}}" id="titre{{article.id}}">
+                                            </div>
+                                            <div class="form-group ">
+                                                <label class="control-label required" for="contenu">Contenu</label>
+                                                <textarea type="textarea" name="contenu" required="required" class="form-control tinymce" id="contenu{{article.id}}">{{article.contenu}}</textarea>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label class="control-label required" for="auteur">Auteur</label>
+                                                <input type="text" name="auteur" required="required" class="form-control" value="{{article.auteur}}" id="auteur{{article.id}}">
+                                            </div>
+                                            
+                                                <input type="submit" class="btn btn-success" value="Editer">
+                                                <input type="hidden"  name="csrfTokenMaj" value="{{ csrf_token("csrf_maj_article") }}">
+                                        </form>
+
+                                    </div>
+                                    
+                                </div>
+                                <div class="container-fluid">
+                                                <div class="modal fade" id="formulaireArticle{{ article.id }}">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal">x</button>
+                                                                <h3 class="modal-title">Etes-vous sûr de vouloir supprimer cet article ?</h3>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form action="{{ path('blog_blog_supprimer', { 'id': article.id})}}" method="post" id="suppression{{article.id}}" class="boutonSuppression" data-article="{{article.id}}">
+                                                                    <input type="submit" class="btn btn-danger" value="Oui">
+                                                                    <button class="btn btn-success" data-dismiss="modal">Non</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                            </div>
+                            
+
+                            {% endfor %}
+
+                        </div>
+                    </div>
+

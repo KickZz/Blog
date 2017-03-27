@@ -1,0 +1,423 @@
+
+<div id="form{{ com.id }}" class="panel-collapse collapse ">
+                <div class="well">
+                    <form action="{{ path('blog_blog_comrep', { 'idArticle': article.id, 'idCom': com.id, 'niveau': 1, 'page': page })}}" method="post" id="formulairecom{{com.id}}">
+                        <div class="form-group">
+                            <label class="control-label required" for="auteur">Auteur : </label>
+                            <input type="text" id="auteur{{com.id}}{{article.id}}" name="auteur" data-auteur="auteur{{ com.id }}" required="required" maxlenght="255" class="form-control auteur" placeholder="Votre pseudo...">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label required" for="contenu">Contenu : </label>
+                            <textarea type="text" id="contenu{{com.id}}{{article.id}}" name="contenu" data-contenu="contenu{{ com.id }}" required="required" class="form-control contenu" placeholder="Votre commentaire..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" id="{{com.id}}" name="publier{{ com.id }}" class="btn btn-default" value="Publier" >
+                        </div>
+                    </form>
+                </div>
+            </div>
+<h3>Commentaire(s) :</h3><hr>
+        <div id="mescoms{{ article.id }}" class="panel-group">
+        {# Affichage des commentaires par niveau de reponse #} 
+        {# Commentaire de niveau 0#} 
+        {% for com in article.commentaires if com.niveau == 0 %} 
+        {% set a = com.id %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 id="titre{{com.id}}" class="panel-title"><em>Par {{com.auteur}} le {{com.datecom|date ('d.m.Y')}} à {{com.datecom|date ("H\\hi\\ms\\s")}}</em>
+                    <div class="pull-right">
+                        <a href="#form{{ com.id }}" id="{{com.id}}" data-parent="#mescoms{{ article.id }}" class="idbouton boutonform" data-toggle="collapse" title="Répondre"><i class="fa fa-comments" aria-hidden="true"></i></a>
+                        
+                {% if com.signaler == false %}
+                    <a href="{{ path('blog_blog_signaler', { 'id': com.id, 'page': page })}}" class="erreur" title="Signaler"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> </a>
+                {% elseif com.signaler == true %} 
+                        {% if com.editer == false %}
+                
+                            <i title="Déjà Signaler" class="fa fa-exclamation-circle signaler" aria-hidden="true"></i>
+                
+                        {%else%}
+                
+                            <i title="Déjà Signaler" class="fa fa-exclamation-circle signaler" aria-hidden="true"></i>
+                
+                {% endif %} {% endif %}
+                    </div>
+                </h4>
+            </div>
+            <div id="contenu{{com.id}}" class="panel-body">
+                {{com.contenu}}
+            </div>
+            
+            
+            <div id="form{{ com.id }}" class="panel-collapse collapse ">
+                <div class="well">
+                    <form action="{{ path('blog_blog_comrep', { 'idArticle': article.id, 'idCom': com.id, 'niveau': 1, 'page': page })}}" method="post" class="formcom" id="formulaire{{ com.id }}" data-form="{{ article.id }}" data-idform="{{ com.id }}">
+                        <div class="form-group">
+                            <label class="control-label required" for="auteur">Auteur : </label>
+                            <input type="text" id="auteur{{ com.id }}" name="auteur" data-auteur="auteur{{ com.id }}" required="required" maxlenght="255" class="form-control auteur" placeholder="Votre pseudo...">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label required" for="contenu">Contenu : </label>
+                            <textarea type="text" id="contenu{{ com.id }}" name="contenu" data-contenu="contenu{{ com.id }}" required="required" class="form-control contenu" placeholder="Votre commentaire..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" id="{{ com.id }}" name="publier{{ com.id }}" class="btn btn-default" value="Publier" >
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {# Commentaire de niveau 1#} 
+        {% for com in article.commentaires if com.idcomreponse == a%} 
+        {% set b = com.id %}
+        
+        <div class="panel panel-default col-md-offset-1 col-xs-offset-1">
+            <div class="panel-heading">
+                <h4 id="titre{{com.id}}" class="panel-title"><em>Par {{com.auteur}} le {{com.datecom|date ('d.m.Y')}} à {{com.datecom|date ("H\\hi\\ms\\s")}}</em>
+                    <div class="pull-right">
+                        <a href="#form{{ com.id }}" id="{{com.id}}" data-parent="#mescoms{{ article.id }}" class="idbouton" data-toggle="collapse" title="Répondre"><i class="fa fa-comments" aria-hidden="true"></i></a>
+                        
+                {% if com.signaler == false %}
+                    <a href="{{ path('blog_blog_signaler', { 'id': com.id, 'page': page })}}" class="erreur" title="Signaler"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> </a>
+                {% elseif com.signaler == true %} 
+                        {% if com.editer == false %}
+                
+                            <i title="Déjà Signaler" class="fa fa-exclamation-circle signaler" aria-hidden="true"></i>
+                
+                        {%else%}
+                
+                            <i title="Déjà Signaler" class="fa fa-exclamation-circle signaler" aria-hidden="true"></i>
+                
+                {% endif %} {% endif %}
+                    </div>
+                </h4>
+                    
+            </div>
+            <div id="contenu{{com.id}}" class="panel-body">
+                {{com.contenu}}
+                </div>
+            
+            <div id="form{{ com.id }}" class="panel-collapse collapse ">
+                <div class="well">
+                    <form action="{{ path('blog_blog_comrep', { 'idArticle': article.id, 'idCom': com.id, 'niveau': 2, 'page': page })}}" method="post" data-form="{{ article.id }}">
+                        <div class="form-group">
+                            <label class="control-label required" for="auteur">Auteur : </label>
+                            <input type="text" id="auteur{{ com.id }}" name="auteur" required="required" maxlenght="255" class="form-control" placeholder="Votre pseudo...">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label required" for="contenu">Contenu : </label>
+                            <textarea type="text" id="contenu{{ com.id }}" name="contenu" required="required" class="form-control" placeholder="Votre commentaire..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" id="publier{{ com.id }}" name="publier{{ com.id }}" class="btn btn-default" >Publier</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+
+        {# Commentaire de niveau 2#} 
+        {% for com in article.commentaires if com.idcomreponse == b%}
+        {% set c = com.id %}
+        <div class="panel panel-default col-md-offset-2 col-xs-offset-2">
+            <div class="panel-heading">
+                <h4 id="titre{{com.id}}" class="panel-title"><em>Par {{com.auteur}} le {{com.datecom|date ('d.m.Y')}} à {{com.datecom|date ("H\\hi\\ms\\s")}}</em>
+                    <div class="pull-right">
+                        <a href="#form{{ com.id }}" id="{{com.id}}" data-parent="#mescoms{{ article.id }}" class="idbouton" data-toggle="collapse" title="Répondre"><i class="fa fa-comments" aria-hidden="true"></i></a>
+                        
+                {% if com.signaler == false %}
+                    <a href="{{ path('blog_blog_signaler', { 'id': com.id, 'page': page })}}" class="erreur" title="Signaler"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> </a>
+                {% elseif com.signaler == true %} 
+                        {% if com.editer == false %}
+                
+                            <i title="Déjà Signaler" class="fa fa-exclamation-circle signaler" aria-hidden="true"></i>
+                
+                        {%else%}
+                
+                            <i title="Déjà Signaler" class="fa fa-exclamation-circle signaler" aria-hidden="true"></i>
+                
+                {% endif %} {% endif %}
+                    </div>
+                </h4>
+            </div>
+            <div id="contenu{{com.id}}" class="panel-body">
+                {{com.contenu}}
+                </div>
+
+            <div id="form{{ com.id }}" class="panel-collapse collapse ">
+                <div class="well">
+                    <form action="{{ path('blog_blog_comrep', { 'idArticle': article.id, 'idCom': com.id, 'niveau': 3, 'page': page })}}" method="post" data-form="{{ article.id }}">
+                        <div class="form-group">
+                            <label class="control-label required" for="auteur">Auteur : </label>
+                            <input type="text" id="auteur{{ com.id }}" name="auteur" required="required" maxlenght="255" class="form-control" placeholder="Votre pseudo...">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label required" for="contenu">Contenu : </label>
+                            <textarea type="text" id="contenu{{ com.id }}" name="contenu" required="required" class="form-control" placeholder="Votre commentaire..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" id="publier{{ com.id }}" name="publier{{ com.id }}" class="btn btn-default" >Publier</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {# Commentaire de niveau 3#} 
+        {% for com in article.commentaires if com.idcomreponse == c%} 
+        {% set d = com.id %}
+        <div class="panel panel-default col-md-offset-3 col-xs-offset-3">
+            <div class="panel-heading">
+                <h4 id="titre{{com.id}}" class="panel-title"><em>Par {{com.auteur}} le {{com.datecom|date ('d.m.Y')}} à {{com.datecom|date ("H\\hi\\ms\\s")}}</em>
+                <div class="pull-right">
+                        
+                            {% if com.signaler == false %}
+                                <a href="{{ path('blog_blog_signaler', { 'id': com.id, 'page': page })}}" class="erreur" title="Signaler"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> </a>
+                {% elseif com.signaler == true %} {% if com.editer == false %}
+                
+                    <i title="Déjà Signaler" class="fa fa-exclamation-circle signaler" aria-hidden="true"></i>
+                
+                {%else%}
+                
+                    <i title="Déjà Signaler" class="fa fa-exclamation-circle signaler" aria-hidden="true"></i>
+                
+                {% endif %} {% endif %}
+                    </div>
+                </h4>
+            </div>
+            <div id="contenu{{com.id}}" class="panel-body">
+                {{com.contenu}}
+            </div>
+                
+        </div>
+
+
+
+        {% endfor %} {% endfor %} {% endfor %} {% endfor %}
+
+
+
+
+</div>
+
+{#<script>
+    
+   
+    $('.boutonform').on('click',function(){
+        var id = $(this).attr('id');
+        var form = '#formulaire' + id;
+        $('#test').html(form);
+        
+    });
+    
+    $('.formcom').submit(function(){
+                    
+                    var epl = $('.com').data("com");
+                    var auteurv = $('.formcom > div > input[class="auteur"]').val();
+                    var contenuv = $('.formcom > div > textarea[class="contenu"]').val();
+                    var auteur = 'auteur='+auteurv;
+                    var contenu = 'contenu='+contenuv;
+                    $("#"+epl).html("<img src='{{asset ('bundles/blogblog/images/loading.gif')}}' alt='loading'>");
+                    
+                    
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: $(this).attr('method'),
+                        data: 'auteur='+ auteurv + '&contenu=' + contenuv,
+                        success: function(data){
+                            $("#"+epl).html(data);
+                            
+            }
+        });    
+    
+    });
+    
+    
+    
+                     
+
+</script>
+<script>
+$('form').on('submit',function(){
+                    
+                    var idart = $(this).data("form");
+                    var epl = "comment"+idart;
+                    var auteur = $('this > div > input').val();
+                    var contenu = $('this > div > textarea').val();
+                    $("#"+epl).html("<img src='{{asset ('bundles/blogblog/images/loading.gif')}}' alt='loading'>");
+                    
+                    
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        method: "post",
+                        data: 'auteur='+ auteur + '&contenu=' + contenu,
+                        success: function(data){
+                            $("#"+epl).html(data);
+                            
+            }
+        });    
+    
+});
+    
+    
+    
+                     
+
+</script>#}
+{#<div id="form{{ com.id }}" class="panel-collapse collapse ">
+                <div class="well">
+                    <form action="{{ path('blog_blog_comrep', { 'idArticle': article.id, 'idCom': com.id, 'niveau': 1, 'page': page })}}" method="post" class="formcom" id="formulaire{{ com.id }}" data-form="{{ article.id }}" data-idform="{{ com.id }}">
+                        <div class="form-group">
+                            <label class="control-label required" for="auteur">Auteur : </label>
+                            <input type="text" id="auteur{{ com.id }}" name="auteur" data-auteur="auteur{{ com.id }}" required="required" maxlenght="255" class="form-control auteur" placeholder="Votre pseudo...">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label required" for="contenu">Contenu : </label>
+                            <textarea type="text" id="contenu{{ com.id }}" name="contenu" data-contenu="contenu{{ com.id }}" required="required" class="form-control contenu" placeholder="Votre commentaire..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" id="{{ com.id }}" name="publier{{ com.id }}" class="btn btn-default" value="Publier" >
+                        </div>
+                    </form>
+                </div>
+            </div>#}
+<script type="text/javascript">
+    
+    init();
+    
+    function init(){
+      soumissionformcom();
+        soumissionform();
+        signaler();  
+    };
+    function init2(){
+      soumissionformcom();
+        
+        signaler();  
+    };
+    function signaler(){
+    $('.signaler').on('click', function (e) {
+        e.preventDefault();
+        var idarticleerreur = $(this).data("article");
+        var epl = "comment" + idarticleerreur;
+        $.ajax({
+                    url: $(this).attr('href'),
+                    success: function (response) {
+                        $("#" + epl).html(response);
+                        init();
+
+                    }
+                });
+        });
+    };
+    function soumissionform() {
+        $('.boutonform').on('click', function () {
+            var id = $(this).data("form");
+            var idarticle = $(this).data("article");
+            var idform = 'formulaire' + id;
+            
+            $("#" + idform).on('submit', function (e) {
+
+                e.preventDefault();
+                var form = "form" + idarticle;
+                var epl = "comment" + idarticle;
+                var loading = "loading" + idarticle;
+                var auteur = $('#auteur' + id).val();
+                var contenu = $('#contenu' + id).val();
+                
+                
+                $("#" + form).removeClass('in');
+                $("#" + loading).html("<img src='{{asset ('bundles/blogblog/images/loading.gif')}}' alt='loading'>");
+                
+        
+                $.ajax({
+                    url: $("#" + idform).attr('action'),
+                    method: $("#" + idform).attr('method'),
+                    data: {
+                        auteur: auteur,
+                        contenu: contenu
+                    },
+                    success: function (response) {
+                        $("#" + loading).html("");
+                        $("#" + epl).html(response);
+                        init();
+                       
+                    }
+                });
+
+            });
+        });
+    };
+    
+    function soumissionformcom() {
+        $('.boutonformcom').on('click', function () {
+            var idcom = $(this).data("form");
+            var idarticlecom = $(this).data("article");
+            var idformcom = 'formulairecom' + idcom;
+
+
+            $("#" + idformcom).on('submit', function (e) {
+
+                e.preventDefault();
+                var formcom = "form" + idcom + idarticlecom;
+                var epl = "comment" + idarticlecom;
+                var loading = "loading" + idarticlecom;
+                var auteur = $('#auteur' + idcom + idarticlecom).val();
+                var contenu = $('#contenu' + idcom + idarticlecom).val();
+                $("#" + formcom).removeClass('in');
+                $("#" + loading).html("<img src='{{asset ('bundles/blogblog/images/loading.gif')}}' alt='loading'>");
+
+
+
+                $.ajax({
+                    url: $("#" + idformcom).attr('action'),
+                    method: $("#" + idformcom).attr('method'),
+                    data: {
+                        auteur: auteur,
+                        contenu: contenu
+                    },
+                    success: function (response) {
+                        $("#" + loading).html("");
+                        $("#" + epl).html(response);
+                        init2();
+                    }
+                });
+
+            });
+        });
+    };
+</script>
+stfalcon_tinymce:
+    include_jquery: false
+    tinymce_jquery: true
+    selector: ".tinymce"
+    # base_url: "http://yourdomain.com/" # this parameter may be included if you need to override the assets_base_urls for your template engine (to override a CDN base url)
+    # Get current language from the parameters.ini
+    language: %locale%
+        # Custom buttons
+    tinymce_buttons:
+        stfalcon: # Id of the first button
+            title: "Stfalcon"
+            image: "http://stfalcon.com/favicon.ico"
+    theme:
+        # Simple theme: same as default theme
+        simple: ~
+        # Advanced theme with almost all enabled plugins
+        advanced:
+            plugins:
+                - "advlist autolink lists link image charmap print preview hr anchor pagebreak"
+                - "searchreplace wordcount visualblocks visualchars code fullscreen"
+                - "insertdatetime media nonbreaking save table contextmenu directionality"
+                - "emoticons template paste textcolor"
+            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+            toolbar2: "print preview media | forecolor backcolor emoticons | stfalcon | example"
+            image_advtab: true
+            templates:
+                - {title: 'Test template 1', content: 'Test 1'}
+                - {title: 'Test template 2', content: 'Test 2'}
+            # BBCode tag compatible theme (see http://www.bbcode.org/reference.php)
+        bbcode:
+            plugins: ["bbcode, code, link, preview"]
+            menubar: false
+            toolbar1: "bold,italic,underline,undo,redo,link,unlink,removeformat,cleanup,code,preview"

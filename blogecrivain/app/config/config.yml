@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+   
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -10,7 +11,7 @@ parameters:
 
 framework:
     #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }
+    translator:      { fallbacks: ["%locale%"] }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -44,6 +45,9 @@ twig:
 doctrine:
     dbal:
         driver:   pdo_mysql
+        options:
+            # PDO::MYSQL_ATTR_INIT_COMMAND
+            1002: "SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))"
         host:     "%database_host%"
         port:     "%database_port%"
         dbname:   "%database_name%"
@@ -69,39 +73,7 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
-stfalcon_tinymce:
-    include_jquery: true
-    tinymce_jquery: true
-    selector: ".tinymce"
-    # base_url: "http://yourdomain.com/" # this parameter may be included if you need to override the assets_base_urls for your template engine (to override a CDN base url)
-    # Get current language from the parameters.ini
-    language: %locale%
-        # Custom buttons
-    tinymce_buttons:
-        stfalcon: # Id of the first button
-            title: "Stfalcon"
-            image: "http://stfalcon.com/favicon.ico"
-    theme:
-        # Simple theme: same as default theme
-        simple: ~
-        # Advanced theme with almost all enabled plugins
-        advanced:
-            plugins:
-                - "advlist autolink lists link image charmap print preview hr anchor pagebreak"
-                - "searchreplace wordcount visualblocks visualchars code fullscreen"
-                - "insertdatetime media nonbreaking save table contextmenu directionality"
-                - "emoticons template paste textcolor"
-            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
-            toolbar2: "print preview media | forecolor backcolor emoticons | stfalcon | example"
-            image_advtab: true
-            templates:
-                - {title: 'Test template 1', content: 'Test 1'}
-                - {title: 'Test template 2', content: 'Test 2'}
-            # BBCode tag compatible theme (see http://www.bbcode.org/reference.php)
-        bbcode:
-            plugins: ["bbcode, code, link, preview"]
-            menubar: false
-            toolbar1: "bold,italic,underline,undo,redo,link,unlink,removeformat,cleanup,code,preview"
+
 assetic:
   debug:          '%kernel.debug%'
   use_controller: '%kernel.debug%'
@@ -110,3 +82,11 @@ assetic:
     jsqueeze:   ~
     scssphp:
       formatter: 'Leafo\ScssPhp\Formatter\Compressed'
+# FOSuser Configuration
+fos_user:
+    db_driver:     orm                       # Le type de BDD à utiliser
+    firewall_name: main                      # Le nom du firewall derrière lequel on utilisera ces utilisateurs
+    user_class:    Blog\UserBundle\Entity\User # La classe de l'entité User que nous utilisons
+    from_email:
+        address: you@example.com
+        sender_name: You

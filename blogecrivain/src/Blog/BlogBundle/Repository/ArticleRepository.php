@@ -2,6 +2,10 @@
 
 namespace Blog\BlogBundle\Repository;
 
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+
 /**
  * ArticleRepository
  *
@@ -10,4 +14,31 @@ namespace Blog\BlogBundle\Repository;
  */
 class ArticleRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getArticles($page, $nbParPage)
+  {
+    $query = $this->createQueryBuilder('a')
+      ->orderBy('a.datePublier', 'DESC')
+      ->getQuery()
+    ;
+
+    $query
+      // On définit l'article à partir de laquelle commencer la liste
+      ->setFirstResult(($page-1) * $nbParPage)
+      // Ainsi que le nombre d'article à afficher sur une page
+      ->setMaxResults($nbParPage)
+    ;
+
+    // Enfin, on retourne l'objet Paginator correspondant à la requête construite
+    return new Paginator($query, true);
+  }
+    public function getAllArticles()
+    {
+        return $this
+        ->createQueryBuilder('a')
+        ->orderBy('a.datePublier', 'DESC')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+
 }

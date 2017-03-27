@@ -2,11 +2,12 @@
 <html>
 
 <head>
-    <title>{% block title %} L'écrivain {% endblock %}</title>
+    <title>{% block title %} Jean Forteroche {% endblock %}</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"> {% block head %} {% endblock %} {% block stylesheets %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> {% endblock %}
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/yeti/bootstrap.min.css" rel="stylesheet" integrity="sha384-HzUaiJdCTIY/RL2vDPRGdEQHHahjzwoJJzGUkYjHVzTwXFQ2QN/nVgX7tzoMW3Ov" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">{% endblock %}
     {% stylesheets 'bundles/blogblog/css/main.css' %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}
@@ -14,10 +15,52 @@
 </head>
 
 <body>
-    <h1>Le blog de l'écrivain</h1> {% block body %} {% endblock %}
-    <footer>
-    </footer>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navBar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span> 
+        </button>
+
+        <a class="navbar-brand" href="{{ path('blog_core_homepage')}}">Jean Forteroche</a>
     </div>
+    <div class="collapse navbar-collapse" id="navBar">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="active"><a href="{{ path('blog_core_homepage')}}"><i class="fa fa-home" aria-hidden="true"></i> Accueil</a></li>
+        </ul>
+    </div>
+  </div>
+</nav> 
+{% block connection %}
+{% endblock %}
+{% block body %}
+{% block image%}
+            
+{% endblock %}
+    
+        <div class="container-fluid">
+            <div class="col-md-9">
+                {% block article%}
+            
+                {% endblock %}
+            </div>
+            <div class="col-md-3">
+                {% block dernierarticle%}
+                {% endblock %}
+            </div>
+        </div>
+   </body> 
+{% endblock %}
+    <footer>
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            Connecté en tant que {{ app.user.username }}
+            -
+            <a href="{{ path('fos_user_security_logout') }}">Déconnexion</a>
+        {% endif %}
+    </footer>
+    
     {% block javascripts %}
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous">
     </script>
@@ -26,8 +69,10 @@
     <script type="text/javascript" src="{{ asset_url }}">
     </script> {% endjavascripts %}
     {% block javascriptsbody %} {% endblock %}   
-    {{ tinymce_init() }} {% endblock %}
+    
+    {{ tinymce_init() }}    
+    {% endblock %}
 
-</body>
+
 
 </html>

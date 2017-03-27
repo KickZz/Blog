@@ -63,7 +63,7 @@ class Commentaire
     /**
      * @var bool
      *
-     * @ORM\Column(name="editer", type="boolean")
+     * @ORM\Column(name="editer", type="boolean", nullable=true)
      */
     private $editer;
     

@@ -1,0 +1,56 @@
+<div class="container-fluid">
+                        <div id="mescoms" class="panel-group ">
+                            
+                                
+                            {% for com in listeCom if com.signaler == true and com.editer == false%}
+                            {% set a = loop.index0%}
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h2 class="panel-title">
+                                            <a href="#{{ com.id }}" data-parent="#mescoms" data-toggle="collapse"> Par {{ com.auteur }} le {{ com.datecom|date ('d.m.Y') }} à {{ com.datecom|date ("H\\hi\\ms\\s") }}</a> 
+                                            <div class="pull-right">
+                                                <a href="{{ path('blog_blog_nepassupprimercom',{'id': com.id })}}" class="ok leverSignalement" title="Lever le signalement"><i class="fa fa-check-square" aria-hidden="true"></i></a>
+                                                <a id="htmlcom" data-toggle="modal" data-backdrop="false" href="#com{{ com.id }}" class="erreur" title="Supprimer"><i class="fa fa-window-close" aria-hidden="true"></i></a>
+                                            </div>
+                                    </h2>
+
+
+                                </div>
+                                <div id="{{ com.id }}" class="panel-collapse collapse ">
+                                    <div class="panel-body">
+                                        {{com.contenu}}
+                                    </div>  
+                                </div>
+                                <div class="container-fluid">
+                                            <div class="modal fade" id="com{{ com.id }}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">x</button>
+                                                            <h3 class="modal-title">Etes-vous sûr de vouloir supprimer ce commentaire ?</h3>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="{{ path('blog_blog_supprimercom',{'id': com.id })}}" method="post" class="boutonSuppressionCom" data-com="{{com.id}}">
+                                                                <input type="submit" class="btn btn-danger" value="Oui">
+                                                                <button class="btn btn-success" data-dismiss="modal">Non</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                            </div>
+
+
+                            
+                            {% endfor %}
+                            <br>
+                            {% if listeCom == null %}
+                                <div>Aucun commentaire signalé</div>
+                            
+                            {% endif %}
+
+
+                        </div>
+                    </div>
