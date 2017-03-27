@@ -5,7 +5,6 @@ namespace Blog\BlogBundle\Controller;
 use Blog\BlogBundle\Entity\Article;
 use Blog\BlogBundle\Entity\Commentaire;
 use Blog\BlogBundle\Form\ArticleType;
-use Blog\BlogBundle\Form\CommentaireType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
