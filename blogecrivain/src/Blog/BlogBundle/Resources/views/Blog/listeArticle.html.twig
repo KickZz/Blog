@@ -30,7 +30,7 @@
                                             </div>
                                             
                                                 <input type="submit" class="btn btn-success" value="Editer">
-                                                <input type="hidden"  name="csrfTokenMaj" value="{{ csrf_token("csrf_maj_article") }}">
+                                                <input type="hidden"  id="csrf{{article.id }}" name="csrfTokenMaj" value="{{ csrf_token('csrf_maj_article') }}">
                                         </form>
 
                                     </div>
@@ -48,6 +48,7 @@
                                                                 <form action="{{ path('blog_blog_supprimer', { 'id': article.id})}}" method="post" id="suppression{{article.id}}" class="boutonSuppression" data-article="{{article.id}}">
                                                                     <input type="submit" class="btn btn-danger" value="Oui">
                                                                     <button class="btn btn-success" data-dismiss="modal">Non</button>
+                                                                    <input type="hidden"  id="csrf{{article.id}}" name="csrfTokenMaj" value="{{ csrf_token('csrf_maj_article') }}">
                                                                 </form>
                                                             </div>
                                                         </div>

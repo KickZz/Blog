@@ -48,6 +48,7 @@
                         </div>
                         <div class="form-group">
                             <input type="submit" id="{{com.id}}" name="publier{{ com.id }}" class="btn btn-default" value="Publier" >
+                            <input type="hidden"  id="csrf{{com.id}}{{article.id}}" name="csrfTokenMaj" value="{{ csrf_token('csrf_rep_com') }}">
                         </div>
                     </form>
                 </div>
@@ -97,6 +98,7 @@
                         </div>
                         <div class="form-group">
                             <button type="submit" id="publier{{ com.id }}" name="publier{{ com.id }}" class="btn btn-default" >Publier</button>
+                            <input type="hidden"  id="csrf{{com.id}}{{article.id}}" name="csrfTokenMaj" value="{{ csrf_token('csrf_rep_com') }}">
                         </div>
                     </form>
                 </div>
@@ -145,6 +147,7 @@
                         </div>
                         <div class="form-group">
                             <button type="submit" id="publier{{ com.id }}" name="publier{{ com.id }}" class="btn btn-default" >Publier</button>
+                            <input type="hidden"  id="csrf{{com.id}}{{article.id}}" name="csrfTokenMaj" value="{{ csrf_token('csrf_rep_com') }}">
                         </div>
                     </form>
                 </div>
