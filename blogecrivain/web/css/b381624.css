@@ -1,0 +1,14 @@
+body {
+    padding-top: 70px;
+    background-color: #E3E5E6;
+}
+.erreur {
+    color: firebrick;
+}
+
+.signalement {
+    color: grey;
+}
+.ok {
+    color: green;
+}

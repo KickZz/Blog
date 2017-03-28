@@ -43,6 +43,7 @@
                 </div>
                 <div class="form-group">
                     <button type="submit" id="publier{{ article.id }}" name="publier{{ article.id }}" class="btn btn-default " >Publier</button>
+                    <input type="hidden"  id="csrf{{article.id}}" name="csrfTokenMaj" value="{{ csrf_token('csrf_rep_article') }}">
                 </div>
             </form>
 
@@ -110,6 +111,7 @@
                 var loading = "loading" + id;
                 var auteur = $('#auteur' + id).val();
                 var contenu = $('#contenu' + id).val();
+                var csrf = $('#csrf' + id).val();
                 
                 
                 $("#" + form).removeClass('in');
@@ -121,7 +123,8 @@
                     method: $(this).attr('method'),
                     data: {
                         auteur: auteur,
-                        contenu: contenu
+                        contenu: contenu,
+                        csrf: csrf
                     },
                     success: function (response) {
                         $("#" + loading).html("");
@@ -147,6 +150,7 @@
                 var loading = "loading" + idarticlecom;
                 var auteur = $('#auteur' + idcom + idarticlecom).val();
                 var contenu = $('#contenu' + idcom + idarticlecom).val();
+                var csrf = $('#csrf' + idcom + idarticlecom).val();
                 $("#" + formcom).removeClass('in');
                 $("#" + loading).html("<img src='{{asset ('bundles/blogblog/images/loading.gif')}}' alt='loading'>");
 
@@ -157,7 +161,8 @@
                     method: $(this).attr('method'),
                     data: {
                         auteur: auteur,
-                        contenu: contenu
+                        contenu: contenu,
+                        csrf: csrf
                     },
                     success: function (response) {
                         $("#" + loading).html("");

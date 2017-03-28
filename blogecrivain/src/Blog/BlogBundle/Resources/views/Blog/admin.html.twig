@@ -48,6 +48,7 @@ function edition() {
                 var auteur = $('#auteur'+ idArticle).val();
                 var titre = $('#titre'+ idArticle).val();
                 var contenu = $('#contenu'+ idArticle).val();
+                var csrf = $('#csrf'+ idArticle).val();
                 
                 
                 
@@ -62,7 +63,8 @@ function edition() {
                     data: {
                         auteur: auteur,
                         contenu: contenu,
-                        titre: titre
+                        titre: titre,
+                        csrf: csrf
                     },
                     success: function (response) {
                          
@@ -89,6 +91,8 @@ function suppression() {
             $('.boutonSuppression').on('submit', function (e) {
 
                 e.preventDefault();
+                var idArticle = $(this).data("article");
+                var csrf = $('#csrf'+ idArticle).val();
                 $("#loading").html("<img src='{{asset ('bundles/blogblog/images/loading.gif')}}' alt='loading'>");
                 
 
@@ -96,6 +100,9 @@ function suppression() {
                 $.ajax({
                     url: $(this).attr('action'),
                     method: $(this).attr('method'),
+                    data: {
+                        csrf: csrf
+                    },
                     success: function (response) {
                         $("#loading").html("");
                         $("#mesArticle").html(response);
@@ -119,6 +126,8 @@ function suppressionCom() {
             $('.boutonSuppressionCom').on('submit', function (e) {
 
                 e.preventDefault();
+                var idCom = $(this).data("com");
+                var csrf = $('#csrf'+ idCom).val();
                 $("#loadingCom").html("<img src='{{asset ('bundles/blogblog/images/loading.gif')}}' alt='loading'>");
                 
 
@@ -126,6 +135,9 @@ function suppressionCom() {
                 $.ajax({
                     url: $(this).attr('action'),
                     method: $(this).attr('method'),
+                    data: {
+                        csrf: csrf
+                    },
                     success: function (response) {
                         $("#loadingCom").html("");
                         $("#commentaire").html(response);

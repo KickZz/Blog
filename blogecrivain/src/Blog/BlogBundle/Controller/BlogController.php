@@ -64,6 +64,9 @@ class BlogController extends Controller
         // Si la requête est en ajax
         if ($request->isXmlHttpRequest()) {
             
+            $token = $request->request->get('csrf');
+            
+            if ($this->isCsrfTokenValid('csrf_rep_article', $token)){
             
             $em = $this
                 ->getDoctrine()
@@ -92,7 +95,11 @@ class BlogController extends Controller
             
               
         }
-        
+        else
+        {
+            throw new NotFoundHttpException("La page demandée n'existe pas");
+        }
+        }
         
     }
     public function comRepAction(Request $request, $idArticle, $idCom, $niveau, $page)
@@ -101,6 +108,10 @@ class BlogController extends Controller
         // Si la requête est en ajax
         if ($request->isXmlHttpRequest()) {
             
+            $token = $request->request->get('csrf');
+            
+            if ($this->isCsrfTokenValid('csrf_rep_com', $token)){
+                
             $em = $this
                 ->getDoctrine()
                 ->getManager()
@@ -127,14 +138,25 @@ class BlogController extends Controller
             return new Response($reponse);
   
         }
+            
+        else
+        {
+            throw new NotFoundHttpException("La page demandée n'existe pas");
+        }
+        }
         
         
         
     }
     public function supprimerAction(Request $request, $id)
     {
+        
         if ($request->isXmlHttpRequest()) {
             
+            $token = $request->request->get('csrf');
+            
+            if ($this->isCsrfTokenValid('csrf_maj_article', $token)){
+                
             $em = $this
                 ->getDoctrine()
                 ->getManager()
@@ -165,13 +187,25 @@ class BlogController extends Controller
                                      
             return new Response($reponse);
         }
+        
+        else
+        {
+            throw new NotFoundHttpException("La page demandée n'existe pas");
+        }
+        }
     }
     public function updateAction(Request $request, $id)
     {
         
+        
         if ($request->isXmlHttpRequest()) {
             
+            $token = $request->request->get('csrf');
             
+            if ($this->isCsrfTokenValid('csrf_maj_article', $token)){
+            
+            
+                
             $em = $this
                 ->getDoctrine()
                 ->getManager()
@@ -207,9 +241,13 @@ class BlogController extends Controller
                                      
             return new Response($reponse);
         
-            }
-        
-        
+            
+        }
+        else
+        {
+            throw new NotFoundHttpException("La page demandée n'existe pas");
+        }
+        }
     
     }
     public function signalerAction(Request $request, $id, $page)
@@ -243,6 +281,10 @@ class BlogController extends Controller
         
         if ($request->isXmlHttpRequest()) {
             
+            $token = $request->request->get('csrf');
+            
+            if ($this->isCsrfTokenValid('csrf_sup_com', $token)){
+                
             $em = $this
                 ->getDoctrine()
                 ->getManager()
@@ -250,8 +292,19 @@ class BlogController extends Controller
             $com = $em->find($id);
             
             
-            if (null === $com) {
-                throw new NotFoundHttpException("Le commentaire d'id ".$id." n'existe pas.");
+            if ($com === null) {
+                
+                $em = $this
+                ->getDoctrine()
+                ->getManager()
+                ->getRepository('BlogBlogBundle:Commentaire');
+                $listeCom = $em->findBy(array(
+                'signaler' => true,
+                'editer' => false));
+                
+                $reponse = $this->render('BlogBlogBundle:Blog:listeComSignaler.html.twig', array('listeCom' => $listeCom))->getContent();
+                                     
+                return new Response($reponse);
             }
             
             $com->setContenu('Ce commentaire a été supprimé !');
@@ -266,7 +319,7 @@ class BlogController extends Controller
             $listeCom = $em->findBy(array(
                 'signaler' => true,
                 'editer' => false));
-            }
+            
             
 
             $reponse = $this->render('BlogBlogBundle:Blog:listeComSignaler.html.twig', array('listeCom' => $listeCom))->getContent();
@@ -274,6 +327,12 @@ class BlogController extends Controller
             return new Response($reponse);
         
         }
+        else
+        {
+            throw new NotFoundHttpException("La page demandée n'existe pas");
+        }
+        }
+    }
     public function nePasSupprimerComAction(Request $request, $id)
     {
             
@@ -287,8 +346,19 @@ class BlogController extends Controller
                 'signaler' => true,
                 'editer' => false));
             
-            if (null === $com) {
-                throw new NotFoundHttpException("Le commentaire d'id ".$id." n'existe pas.");
+            if ($com === null) {
+                
+                $em = $this
+                ->getDoctrine()
+                ->getManager()
+                ->getRepository('BlogBlogBundle:Commentaire');
+                $listeCom = $em->findBy(array(
+                'signaler' => true,
+                'editer' => false));
+                
+                $reponse = $this->render('BlogBlogBundle:Blog:listeComSignaler.html.twig', array('listeCom' => $listeCom))->getContent();
+                                     
+                return new Response($reponse);
             }
             
             
@@ -318,7 +388,7 @@ class BlogController extends Controller
     $liste = $em->getRepository('BlogBlogBundle:Article')->findBy(
       array(),                 // Pas de critère
       array('datePublier' => 'desc'), // On trie par date décroissante
-      3,                  // On sélectionne $limit annonces
+      3,                  // On sélectionne $limit article
       0                        // À partir du premier
     );
 
